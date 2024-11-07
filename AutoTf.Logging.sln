@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTf.Logging", "AutoTf.Logging\AutoTf.Logging.csproj", "{14F272F3-B1F3-415C-83F5-8D16E8EF6F52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTf.Logging.Test", "AutoTf.Logging.Test\AutoTf.Logging.Test.csproj", "{DA2AED33-9560-4C73-ACB2-47EEDE41788A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14F272F3-B1F3-415C-83F5-8D16E8EF6F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14F272F3-B1F3-415C-83F5-8D16E8EF6F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14F272F3-B1F3-415C-83F5-8D16E8EF6F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14F272F3-B1F3-415C-83F5-8D16E8EF6F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2AED33-9560-4C73-ACB2-47EEDE41788A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2AED33-9560-4C73-ACB2-47EEDE41788A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2AED33-9560-4C73-ACB2-47EEDE41788A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2AED33-9560-4C73-ACB2-47EEDE41788A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
