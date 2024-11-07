@@ -20,7 +20,7 @@ public class Tests
     public void Test1()
     {
         _logger.Log("Bluba");
-        Task.Delay(2500);
+        Thread.Sleep(2500);
     }
 
     [TearDown]
