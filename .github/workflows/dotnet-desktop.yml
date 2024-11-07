@@ -1,0 +1,74 @@
+name: Upload to Nuget feed
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: windows-latest 
+
+    env:
+      Solution_Name: AutoTf.Logging.sln
+      #Test_Project_Path: AutoTf.RailDetection.Tests/AutoTf.RailDetection.Tests.csproj
+      BUILD_VERSION: ${{ github.run_number }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+      
+    - name: Install NuGet CLI
+      uses: nuget/setup-nuget@v1
+
+    - name: Get Package ID
+      id: timestamp
+      shell: pwsh
+      run: |
+        $timestamp = Get-Date -Format "yyyyMMddHHmmss"
+        echo "::set-output name=timestamp::$timestamp"
+    
+    - name: Build the project
+      run: dotnet build --configuration ${{ matrix.configuration }}
+
+    - name: Pack
+      run: dotnet pack --configuration ${{ matrix.configuration }} --version-suffix ${{ steps.timestamp.outputs.timestamp }}
+
+    - name: Add nuget source
+      env:
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        NEXUS_URL: ${{ secrets.NEXUS_URL }}
+      run: nuget sources add -name nexus-source -source ${{ env.NEXUS_URL }} -username ${{ env.NEXUS_USERNAME }} -password ${{ env.NEXUS_PASSWORD }}
+    
+    - name: Get Nuget File
+      id: nugetfile
+      shell: pwsh
+      run: |
+        $NugetFile = Get-ChildItem -Path "AutoTf.Logging/bin/Release/" -Filter *.nupkg | Select-Object -First 1
+        echo "::set-output name=nugetfile::$NugetFile"
+    
+    - name: Upload NuGet package
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NEXUS_URL: ${{ secrets.NEXUS_URL }}
+      run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" -Source ${{ env.NEXUS_URL }}
