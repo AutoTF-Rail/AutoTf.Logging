@@ -13,6 +13,7 @@ public class Tests
 
     private void NewLog(string obj)
     {
+        Thread.Sleep(2500);
         Assert.Pass();
     }
 
@@ -20,7 +21,6 @@ public class Tests
     public void Test1()
     {
         _logger.Log("Bluba");
-        Thread.Sleep(2500);
     }
 
     [TearDown]
