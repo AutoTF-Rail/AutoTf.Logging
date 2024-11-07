@@ -16,6 +16,7 @@ public class Logger : IDisposable
     private readonly SemaphoreSlim _semaphore;
     private readonly CancellationTokenSource _cts;
     private Task _logTask;
+    private readonly object _fileLock = new object();
 
     public event Action<string> NewLog;
     
@@ -82,7 +83,10 @@ public class Logger : IDisposable
     {
         try
         {
-            await File.AppendAllTextAsync(_filePath, logEntry + Environment.NewLine);
+            lock (_fileLock)
+            {
+                File.AppendAllText(_filePath, logEntry + Environment.NewLine);
+            }
         }
         catch (Exception ex)
         {
