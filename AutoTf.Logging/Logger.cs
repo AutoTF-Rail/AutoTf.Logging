@@ -10,7 +10,7 @@ namespace AutoTf.Logging;
 public class Logger : IDisposable
 {
     private string _dirPath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName);
-    private string _filePath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName, DateTime.Now.ToString("yyyy-MM-dd"), ".txt");
+    private string _filePath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName, DateTime.Now.ToString("yyyy-MM-dd") + ".txt");
 
     private readonly ConcurrentQueue<string> _logQueue;
     private readonly SemaphoreSlim _semaphore;
