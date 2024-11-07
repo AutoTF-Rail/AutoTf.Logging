@@ -17,7 +17,7 @@ public class Logger : IDisposable
     private readonly CancellationTokenSource _cts;
     private Task _logTask;
 
-    public Action<string> NewLog;
+    public event Action<string> NewLog;
     
     public Logger()
     {
@@ -42,6 +42,7 @@ public class Logger : IDisposable
     {
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
         _logQueue.Enqueue(message);
+        
         NewLog.Invoke(message);
     }
 
