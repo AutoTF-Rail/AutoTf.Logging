@@ -33,11 +33,6 @@ public class Logger : IDisposable
         StartLogging();
 
         Directory.CreateDirectory(_dirPath);
-        
-        if (File.Exists(_filePath))
-            return;
-        
-        File.Create(_filePath);
         _isLoggerReady = true;
     }
 
