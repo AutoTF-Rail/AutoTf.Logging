@@ -19,6 +19,8 @@ public class Logger : IDisposable
     private readonly object _fileLock = new object();
 
     public event Action<string> NewLog;
+
+    private bool _isLoggerReady = false;
     
     public Logger()
     {
@@ -36,11 +38,13 @@ public class Logger : IDisposable
             return;
         
         File.Create(_filePath);
-        Log("File Created.");
+        _isLoggerReady = true;
     }
 
     public void Log(string message)
     {
+        if (!_isLoggerReady)
+            return;
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
         _logQueue.Enqueue(message);
         
@@ -81,6 +85,8 @@ public class Logger : IDisposable
 
     private async Task WriteLogToFileAsync(string logEntry)
     {
+        if (!_isLoggerReady)
+            return;
         try
         {
             lock (_fileLock)
