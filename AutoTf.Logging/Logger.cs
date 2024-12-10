@@ -18,7 +18,7 @@ public class Logger : IDisposable
     private Task _logTask;
     private readonly object _fileLock = new object();
 
-    public event Action<string> NewLog;
+    public event Action<string>? NewLog;
 
     private bool _isLoggerReady = false;
     
@@ -43,7 +43,7 @@ public class Logger : IDisposable
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
         _logQueue.Enqueue(message);
         
-        NewLog.Invoke(message);
+        NewLog?.Invoke(message);
     }
 
     private void StartLogging()
