@@ -15,24 +15,33 @@ public class Logger : IDisposable
     private readonly ConcurrentQueue<string> _logQueue;
     private readonly SemaphoreSlim _semaphore;
     private readonly CancellationTokenSource _cts;
-    private Task _logTask;
+    private Task? _logTask;
     private readonly object _fileLock = new object();
 
     public event Action<string>? NewLog;
 
     private bool _isLoggerReady = false;
+    private bool _isLinux = true;
+    private bool _logToConsole = false;
     
-    public Logger()
+    public Logger(bool logToConsole = false)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            throw new PlatformNotSupportedException("Windows is not supported by the Logger.");
-        
+        _logToConsole = logToConsole;
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            _isLinux = false;
+        }
+
         _logQueue = new ConcurrentQueue<string>();
         _semaphore = new SemaphoreSlim(1, 1);
         _cts = new CancellationTokenSource();
-        StartLogging();
 
-        Directory.CreateDirectory(_dirPath);
+        if (_isLinux)
+        {
+            StartLogging();
+            Directory.CreateDirectory(_dirPath);
+        }
+
         _isLoggerReady = true;
     }
 
@@ -40,7 +49,15 @@ public class Logger : IDisposable
     {
         if (!_isLoggerReady)
             return;
+        if(!_isLinux && !_logToConsole)
+            return;
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
+
+        if (_logToConsole)
+        {
+            Console.WriteLine(message);
+            return;
+        }
         _logQueue.Enqueue(message);
         
         NewLog?.Invoke(message);
@@ -98,7 +115,7 @@ public class Logger : IDisposable
     public void Dispose()
     {
         _cts.Cancel();
-        _logTask.Wait();
+        _logTask?.Wait();
         _semaphore.Dispose();
         _cts.Dispose();
     }
