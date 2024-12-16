@@ -7,7 +7,6 @@
         <Title>AutoTF Logger</Title>
         <Description>Really simple AutoTF Logger that can be parsed along all AutoTF packages/Demos</Description>
         <PackageProjectUrl>https://autotf.de</PackageProjectUrl>
-        <PackageIcon>https://autotf.de/WheelBlue.png</PackageIcon>
         <RepositoryUrl>https://github.com/AutoTF-Rail/AutoTf.Logging.git</RepositoryUrl>
         <RepositoryType>Private</RepositoryType>
     </PropertyGroup>
