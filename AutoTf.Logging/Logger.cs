@@ -5,32 +5,34 @@ namespace AutoTf.Logging;
 
 /// <summary>
 /// Logger used in all AutoTF Packages and Demos.
-/// Saves data per Default to /var/log/AutoTF/HostName/
+/// Saves data per Default to /var/log/AutoTF/HostName/Date
+/// Main support lays on Linux distros, Windows is supported too, due to some packages needing the logger.
+/// In the case of windows, you can turn on Logging to console in the ctor.
 /// </summary>
 public class Logger : IDisposable
 {
-    private string _dirPath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName);
-    private string _filePath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName, DateTime.Now.ToString("yyyy-MM-dd") + ".txt");
+    private readonly string _dirPath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName);
+    private readonly string _filePath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName, DateTime.Now.ToString("yyyy-MM-dd") + ".txt");
 
     private readonly ConcurrentQueue<string> _logQueue;
     private readonly SemaphoreSlim _semaphore;
     private readonly CancellationTokenSource _cts;
-    private Task? _logTask;
+    
+    private readonly bool _isLoggerReady;
+    private readonly bool _isLinux;
+    private readonly bool _logToConsole;
+    
     private readonly object _fileLock = new object();
-
+    
+    private Task? _logTask;
+    
     public event Action<string>? NewLog;
-
-    private bool _isLoggerReady = false;
-    private bool _isLinux = true;
-    private bool _logToConsole = false;
     
     public Logger(bool logToConsole = false)
     {
         _logToConsole = logToConsole;
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            _isLinux = false;
-        }
+        
+        _isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
         _logQueue = new ConcurrentQueue<string>();
         _semaphore = new SemaphoreSlim(1, 1);
@@ -49,17 +51,21 @@ public class Logger : IDisposable
     {
         if (!_isLoggerReady)
             return;
+        
+        // If the current platform is not linux, and logToConsole is disabled, we can return because we don't need to log anything.
         if(!_isLinux && !_logToConsole)
             return;
+        
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
 
+        // If it is linux, AND logToConsole is enabled, we only need to log to console and not to the file.
         if (_logToConsole)
         {
             Console.WriteLine(message);
             return;
         }
-        _logQueue.Enqueue(message);
         
+        _logQueue.Enqueue(message);
         NewLog?.Invoke(message);
     }
 
@@ -95,10 +101,10 @@ public class Logger : IDisposable
         }
     }
 
-    private async Task WriteLogToFileAsync(string logEntry)
+    private Task WriteLogToFileAsync(string logEntry)
     {
         if (!_isLoggerReady)
-            return;
+            return Task.CompletedTask;
         try
         {
             lock (_fileLock)
@@ -110,6 +116,8 @@ public class Logger : IDisposable
         {
             Console.WriteLine($"Error writing log: {ex.Message}");
         }
+
+        return Task.CompletedTask;
     }
 
     public void Dispose()

@@ -5,18 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Title>AutoTF Logger</Title>
-        <Description>AutoTF Logger that can be parsed along all AutoTF packages/Demos</Description>
+        <Description>Really simple AutoTF Logger that can be parsed along all AutoTF packages/Demos</Description>
         <PackageProjectUrl>https://autotf.de</PackageProjectUrl>
-        <PackageIcon>LogoFinal.png</PackageIcon>
+        <PackageIcon>https://autotf.de/WheelBlue.png</PackageIcon>
         <RepositoryUrl>https://github.com/AutoTF-Rail/AutoTf.Logging.git</RepositoryUrl>
         <RepositoryType>Private</RepositoryType>
     </PropertyGroup>
-
-    <ItemGroup>
-      <None Update="LogoFinal.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
-    </ItemGroup>
 
 </Project>
