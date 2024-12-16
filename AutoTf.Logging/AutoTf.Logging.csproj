@@ -11,4 +11,10 @@
         <RepositoryType>Private</RepositoryType>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Update="WheelBlue.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
