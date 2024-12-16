@@ -9,6 +9,9 @@
         <PackageProjectUrl>https://autotf.de</PackageProjectUrl>
         <RepositoryUrl>https://github.com/AutoTF-Rail/AutoTf.Logging.git</RepositoryUrl>
         <RepositoryType>Private</RepositoryType>
+        <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
+        <PackageIcon>WheelBlue.png</PackageIcon>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
