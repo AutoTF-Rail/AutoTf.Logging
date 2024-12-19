@@ -43,7 +43,7 @@ jobs:
       id: timestamp
       shell: pwsh
       run: |
-        $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
+        $timestamp = Get-Date -Format "yyyy.MM.dd.HH.mm.ss"
         echo "::set-output name=timestamp::$timestamp"
     
     - name: Build the project
