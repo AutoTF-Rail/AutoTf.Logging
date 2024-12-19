@@ -18,7 +18,6 @@ jobs:
 
     env:
       Solution_Name: AutoTf.Logging.sln
-      #Test_Project_Path: AutoTf.RailDetection.Tests/AutoTf.RailDetection.Tests.csproj
       BUILD_VERSION: ${{ github.run_number }}
 
     steps:
@@ -44,7 +43,7 @@ jobs:
       id: timestamp
       shell: pwsh
       run: |
-        $timestamp = Get-Date -Format "yyyyMMddHHmmss"
+        $timestamp = Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
         echo "::set-output name=timestamp::$timestamp"
     
     - name: Build the project
@@ -67,8 +66,14 @@ jobs:
         $NugetFile = Get-ChildItem -Path "AutoTf.Logging/bin/Release/" -Filter *.nupkg | Select-Object -First 1
         echo "::set-output name=nugetfile::$NugetFile"
     
-    - name: Upload NuGet package
+    - name: Upload NuGet package to nexus feed
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         NEXUS_URL: ${{ secrets.NEXUS_URL }}
       run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" -Source ${{ env.NEXUS_URL }}
+      
+    - name: Upload NuGet package to Nuget Gallery
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NEXUS_URL: ${{ secrets.NEXUS_URL }}
+      run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" -k "${{ secrets.NUGETAPIKEY }}" --source https://api.nuget.org/v3/index.json
