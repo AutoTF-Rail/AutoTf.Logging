@@ -25,3 +25,7 @@ private void NewLog(string obj)
     Console.WriteLine(obj);
 }
 ```
+
+
+## Support and Contributions
+If you would like to contribute to this package, or get support for it, feel free to contact us at [opensource@autotf.de](opensource@autotf.de)

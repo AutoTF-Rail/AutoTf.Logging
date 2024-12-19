@@ -12,11 +12,12 @@
         <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</PackageLicenseUrl>
         <PackageIcon>WheelBlue.png</PackageIcon>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Company>AutoTF</Company>
     </PropertyGroup>
 
 
     <ItemGroup>
-        <None Include="WheelBlue.png" Pack="true" PackagePath="">
+        <None Include="..\WheelBlue.png" Pack="true" PackagePath="">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
