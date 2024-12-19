@@ -73,4 +73,4 @@ jobs:
       run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" -Source ${{ env.NEXUS_URL }}
       
     - name: Upload NuGet package to Nuget Gallery
-      run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" --api-key "${{ secrets.NUGETAPIKEY }}" --source https://api.nuget.org/v3/index.json
+      run: nuget push "${{ steps.nugetfile.outputs.nugetfile }}" -ApiKey "${{ secrets.NUGETAPIKEY }}" --source https://api.nuget.org/v3/index.json
