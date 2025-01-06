@@ -7,7 +7,7 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        _logger = new Logger();
+        _logger = new Logger(true);
         _logger.NewLog += NewLog;
     }
 

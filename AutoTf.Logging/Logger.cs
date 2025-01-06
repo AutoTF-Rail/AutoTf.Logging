@@ -59,14 +59,9 @@ public class Logger : IDisposable
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
 
         // If it is linux, AND logToConsole is enabled, we only need to log to console and not to the file.
-        if (_logToConsole)
-        {
-            Console.WriteLine(message);
-            return;
-        }
-        
-        _logQueue.Enqueue(message);
+        Console.WriteLine(message);
         NewLog?.Invoke(message);
+        _logQueue.Enqueue(message);
     }
 
     private void StartLogging()
