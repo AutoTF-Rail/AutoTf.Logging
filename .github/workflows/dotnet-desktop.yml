@@ -44,7 +44,7 @@ jobs:
       shell: pwsh
       run: |
         $timestamp = Get-Date -Format "yyyyMMdd-HHmm"
-        echo "::set-output name=timestamp::$timestamp"
+        echo "::set-output name=timestamp::develop-$timestamp"
     
     - name: Build the project
       run: dotnet build --configuration ${{ matrix.configuration }}
