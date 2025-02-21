@@ -12,7 +12,6 @@ namespace AutoTf.Logging;
 public class Logger : IDisposable
 {
     private readonly string _dirPath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName);
-    private readonly string _filePath = Path.Combine("/var/log/AutoTF/", AppDomain.CurrentDomain.FriendlyName, DateTime.Now.ToString("yyyy-MM-dd") + ".txt");
 
     private readonly ConcurrentQueue<string> _logQueue;
     private readonly SemaphoreSlim _semaphore;
@@ -59,7 +58,8 @@ public class Logger : IDisposable
         message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
 
         // If it is linux, AND logToConsole is enabled, we only need to log to console and not to the file.
-        Console.WriteLine(message);
+        if(_logToConsole)
+            Console.WriteLine(message);
         NewLog?.Invoke(message);
         _logQueue.Enqueue(message);
     }
@@ -104,7 +104,7 @@ public class Logger : IDisposable
         {
             lock (_fileLock)
             {
-                File.AppendAllText(_filePath, logEntry + Environment.NewLine);
+                File.AppendAllText(Path.Combine(_dirPath, DateTime.Now.ToString("yyyy-MM-dd") + ".txt"), logEntry + Environment.NewLine);
             }
         }
         catch (Exception ex)
