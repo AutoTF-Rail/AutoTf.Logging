@@ -2,6 +2,8 @@
 
 A really really simple Logger that is used in several AutoTF Applications/Packages.
 
+## This package is available on [NuGet](https://www.nuget.org/packages/AutoTf.Logging/)
+
 Logs to "/var/log/AutoTF/HostName/Date"
 
 It's mainly based on Linux systems, but can run on Windows too without writing to any files.
