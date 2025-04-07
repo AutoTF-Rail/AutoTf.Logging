@@ -47,7 +47,7 @@ public class Logger : IDisposable
         _isLoggerReady = true;
     }
 
-    public void Log(string message, bool includeCaller = true, [CallerMemberName] string caller = "", [CallerLineNumber] int line = -1)
+    public void Log(string message, bool includeCaller = true, [CallerFilePath] string caller = "", [CallerLineNumber] int line = -1)
     {
         if (!_isLoggerReady)
             return;
@@ -59,7 +59,7 @@ public class Logger : IDisposable
         string newMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - ";
         
         if(includeCaller)
-            newMessage += $"[{caller}({line})] - {message}";
+            newMessage += $"[{Path.GetFileNameWithoutExtension(caller)}({line})] - {message}";
         else
             newMessage += message;
 
