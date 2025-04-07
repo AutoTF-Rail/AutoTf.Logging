@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace AutoTf.Logging;
@@ -46,7 +47,7 @@ public class Logger : IDisposable
         _isLoggerReady = true;
     }
 
-    public void Log(string message)
+    public void Log(string message, bool includeCaller = true, [CallerMemberName] string caller = "", [CallerLineNumber] int line = -1)
     {
         if (!_isLoggerReady)
             return;
@@ -55,7 +56,12 @@ public class Logger : IDisposable
         if(!_isLinux && !_logToConsole)
             return;
         
-        message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
+        message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - ";
+        
+        if(includeCaller)
+            message += $"[{caller}({line})] - {message}";
+        else
+            message += message;
 
         // If it is linux, AND logToConsole is enabled, we only need to log to console and not to the file.
         if(_logToConsole)
