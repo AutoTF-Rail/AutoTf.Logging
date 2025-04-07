@@ -56,18 +56,18 @@ public class Logger : IDisposable
         if(!_isLinux && !_logToConsole)
             return;
         
-        message = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - ";
+        string newMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - ";
         
         if(includeCaller)
-            message += $"[{caller}({line})] - {message}";
+            newMessage += $"[{caller}({line})] - {message}";
         else
-            message += message;
+            newMessage += message;
 
         // If it is linux, AND logToConsole is enabled, we only need to log to console and not to the file.
         if(_logToConsole)
-            Console.WriteLine(message);
-        NewLog?.Invoke(message);
-        _logQueue.Enqueue(message);
+            Console.WriteLine(newMessage);
+        NewLog?.Invoke(newMessage);
+        _logQueue.Enqueue(newMessage);
     }
 
     private void StartLogging()
